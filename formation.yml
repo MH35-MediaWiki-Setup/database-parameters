@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: MediaWiki RDS parameters
+Resources:
+  ParameterGroup:
+    Type: AWS::RDS::DBParameterGroup
+    Properties:
+      Description: MediaWiki MySQL parameter group
+      Family: mysql8.0
+      Parameters:
+        character_set_server: utf8mb4
+        collation_server: utf8mb4_bin
+        time_zone: Asia/Tokyo
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-ParameterGroup"
+  OptionsGroup:
+    Type: AWS::RDS::OptionGroup
+    Properties:
+      EngineName: mysql
+      MajorEngineVersion: '8.0'
+      OptionGroupDescription: MediaWiki MySQL options group
+      OptionConfigurations:
+        - OptionName: MARIADB_AUDIT_PLUGIN
+          OptionSettings:
+            - Name: SERVER_AUDIT_EVENTS
+              Value: CONNECT,QUERY
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-OptionsGroup"
